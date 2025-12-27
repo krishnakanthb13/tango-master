@@ -44,3 +44,5 @@ The repository is now ready for GitHub publication:
 
 ---
 
+For a detailed breakdown of all the files in this repository, check out the **[Code Walkthrough](file:///c:/Users/ADMIN/OneDrive/Documents/GitHub/tango-master/codewalkthrough.md)**.
+
