@@ -52,13 +52,14 @@
    ```env
    GEMINI_API_KEY=your_api_key_here
    ```
-   Note: You can get the API key from [Google AI Studio](https://aistudio.google.com/api-keys).
+   - You can get the API key from [Google AI Studio](https://aistudio.google.com/api-keys).
 
 4. **Run Locally**:
    ```bash
    npm run dev
    ```
-   Note: The app will be available at `http://localhost:3000/`. And you can run using the run_app.bat file.
+   - The app will be available at `http://localhost:3000/`. 
+   - And you can run using the run_app.bat file.
 
 ---
 
