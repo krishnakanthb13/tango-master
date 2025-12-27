@@ -1,0 +1,5 @@
+{
+  "name": "Tango Master",
+  "description": "A smart solver for the LinkedIn Tango (Sun & Moon) puzzle. Upload a screenshot to solve instantly using Gemini Vision or play manually.",
+  "requestFramePermissions": []
+}
