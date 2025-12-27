@@ -12,7 +12,7 @@
 
 - **Interactive Grid Editor**: Manually input puzzles with a click-based interface for cells and constraints.
 - **Instant Backtracking Solver**: Solves any valid 6x6 Tango puzzle in milliseconds.
-- **AI-Powered Vision**: Upload a screenshot of a puzzle, and let **Google Gemini 1.5 Flash** (with Thinking mode) analyze the grid and constraints for you.
+- **AI-Powered Vision**: Upload a screenshot of a puzzle, and let **Google Gemini 3.0 Flash Preview** (with Thinking mode) analyze the grid and constraints for you. AI can make mistakes, so always double-check the solution. Double click on a cell to toggle between equal (=), cross (x), sun, and moon.
 - **Premium UI**: A sleek, dark-themed experience with fluid animations powered by Framer Motion and Lucide icons.
 
 ---
@@ -49,8 +49,9 @@
 
 3. **Configure Environment Variables**:
    Create a `.env.local` file in the root directory and add your Gemini API key:
+   You can get the API key from [Google AI Studio](https://aistudio.google.com/api-keys).
    ```env
-   VITE_GEMINI_API_KEY=your_api_key_here
+   GEMINI_API_KEY=your_api_key_here
    ```
 
 4. **Run Locally**:

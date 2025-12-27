@@ -16,7 +16,7 @@ Once the grid matches your puzzle, click **Solve Puzzle**. The app uses a backtr
 Instead of manual entry, you can upload a screenshot:
 - Click **Upload Screenshot**.
 - Select a screenshot of a 6x6 Tango grid.
-- **Gemini 3 Flash Preview** (with Thinking mode) will analyze the image, reason through the spatial layout, and automatically populate the grid.
+- **Gemini 3.0 Flash Preview** (with Thinking mode) will analyze the image, reason through the spatial layout, and automatically populate the grid.
 
 > [!TIP]
 > **For the best AI results**:
@@ -30,7 +30,7 @@ To use the AI vision, ensure you have your Gemini API key in `.env.local`:
 ```env
 GEMINI_API_KEY=your_key_here
 ```
-
+Note: You can get the API key from [Google AI Studio](https://aistudio.google.com/api-keys).
 
 - Once configured, the "Upload Screenshot" button will use Gemini to "see" the puzzle for you!
 
@@ -43,4 +43,4 @@ The repository is now ready for GitHub publication:
 - **`walkthrough.md`**: This guide provides in-depth usage details for new users.
 
 ---
-*Ready to push to GitHub!*
+
