@@ -31,4 +31,16 @@ To use the AI vision, ensure you have your Gemini API key in `.env.local`:
 GEMINI_API_KEY=your_key_here
 ```
 
-Once configured, the "Upload Screenshot" button will use Gemini to "see" the puzzle for you!
+
+- Once configured, the "Upload Screenshot" button will use Gemini to "see" the puzzle for you!
+
+## Publishing Readiness
+
+The repository is now ready for GitHub publication:
+- **`README.md`**: Fully updated with a project banner, feature list, tech stack, installation guide, and license details.
+- **`LICENSE`**: GPL-3.0 license is present and linked.
+- **`.gitignore`**: Optimized to keep build artifacts and environment secrets out of your public repo.
+- **`walkthrough.md`**: This guide provides in-depth usage details for new users.
+
+---
+*Ready to push to GitHub!*
