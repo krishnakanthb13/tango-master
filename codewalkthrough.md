@@ -13,6 +13,7 @@ Welcome to the **Tango Master** codebase! This guide will help you understand ho
 | File | Description |
 | :--- | :--- |
 | **[components/Grid.tsx](file:///c:/Users/ADMIN/OneDrive/Documents/GitHub/tango-master/components/Grid.tsx)** | Renders the **Puzzle Board**. It draws the 6x6 grid and the small icons (= for equal, x for opposite) between cells. |
+| **[components/HistoryModal.tsx](file:///c:/Users/ADMIN/OneDrive/Documents/GitHub/tango-master/components/HistoryModal.tsx)** | Renders the **History Overlay**. A sleek modal that lists past solve attempts and allows you to reload them. |
 | **[index.html](file:///c:/Users/ADMIN/OneDrive/Documents/GitHub/tango-master/index.html)** | The basic **HTML Skeleton**. It provides the container where the React app lives. |
 
 ## 🧠 Logic & Services

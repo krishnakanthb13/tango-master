@@ -23,3 +23,10 @@ export interface SolverResult {
   grid?: GridState;
   error?: string;
 }
+
+export interface HistoryItem {
+  id: string;
+  timestamp: string;
+  duration: number; // in milliseconds
+  grid: GridState;
+}

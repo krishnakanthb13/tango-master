@@ -9,14 +9,21 @@ You can manually input a puzzle by clicking on the grid:
 - **Cells**: Click once for a **Sun** (yellow circle), twice for a **Moon** (blue crescent), and three times to clear.
 - **Constraints**: Click on the grid lines between cells to toggle between **Equal (=)**, **Opposite (x)**, and **None**.
 
-### 2. Instant Solver
-Once the grid matches your puzzle, click **Solve Puzzle**. The app uses a backtracking algorithm to find the unique solution.
+### 2. Instant Solver & Timer
+Once the grid matches your puzzle, click **Solve Puzzle**. The app uses a backtracking algorithm to find the unique solution. 
+- **Performance Timer**: After solving, the app displays exactly how long it took in milliseconds (and even microseconds for ultra-fast solves).
 
 ### 3. AI-Powered Vision (Gemini 3)
 Instead of manual entry, you can upload a screenshot:
 - Click **Upload Screenshot**.
 - Select a screenshot of a 6x6 Tango grid.
 - **Gemini 3.0 Flash Preview** (with Thinking mode) will analyze the image, reason through the spatial layout, and automatically populate the grid.
+
+### 4. Solve History
+Access your previous work by clicking the **Clock Icon** in the top right corner:
+- **History Modal**: View a list of your past solves with timestamps and durations.
+- **Review Boards**: Click **Load Board** on any history item to see the saved state.
+- **Local Storage**: All history is saved in your browser, so it's there even if you refresh!
 
 > [!TIP]
 > **For the best AI results**:

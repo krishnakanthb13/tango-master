@@ -10,10 +10,10 @@ interface GridProps {
   readOnly?: boolean;
 }
 
-const Grid: React.FC<GridProps> = ({ 
-  grid, 
-  onCellClick, 
-  onHConstraintClick, 
+const Grid: React.FC<GridProps> = ({
+  grid,
+  onCellClick,
+  onHConstraintClick,
   onVConstraintClick,
   readOnly = false
 }) => {
@@ -22,9 +22,10 @@ const Grid: React.FC<GridProps> = ({
   const getCellContent = (val: CellValue) => {
     switch (val) {
       case CellValue.SUN:
-        return <Sun className="w-8 h-8 text-tango-sun fill-tango-sun animate-in zoom-in duration-200" />;
+        return <Sun className="w-6 h-6 sm:w-8 sm:h-8 text-tango-sun fill-tango-sun animate-in zoom-in duration-200" />;
       case CellValue.MOON:
-        return <Moon className="w-8 h-8 text-tango-moon fill-tango-moon animate-in zoom-in duration-200" />;
+        return <Moon className="w-6 h-6 sm:w-8 sm:h-8 text-tango-moon fill-tango-moon animate-in zoom-in duration-200" />;
+
       default:
         return null;
     }
@@ -39,11 +40,12 @@ const Grid: React.FC<GridProps> = ({
             {row.map((cell, c) => (
               <React.Fragment key={`cell-${r}-${c}`}>
                 {/* The Cell */}
-                <div 
+                <div
                   onClick={() => !readOnly && onCellClick(r, c)}
                   className={`
-                    w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center 
+                    w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center 
                     bg-tango-bg border border-tango-accent/50 rounded-md
+
                     cursor-pointer hover:bg-tango-accent/20 transition-colors
                     ${readOnly ? 'cursor-default' : ''}
                   `}
@@ -53,15 +55,16 @@ const Grid: React.FC<GridProps> = ({
 
                 {/* Horizontal Constraint (Right of cell, except last col) */}
                 {c < 5 && (
-                  <div 
+                  <div
                     onClick={() => !readOnly && onHConstraintClick(r, c)}
                     className={`
-                      w-6 h-12 sm:w-8 sm:h-16 flex items-center justify-center 
+                      w-4 h-10 sm:w-6 sm:h-14 flex items-center justify-center 
                       cursor-pointer hover:opacity-100 opacity-80
                       ${readOnly ? 'cursor-default' : ''}
                     `}
                   >
-                    {hConstraints[r][c] === ConstraintType.EQUAL && <Equal className="w-4 h-4 text-white font-bold" />}
+                    {hConstraints[r][c] === ConstraintType.EQUAL && <Equal className="w-3 h-3 text-white font-bold" />}
+
                     {hConstraints[r][c] === ConstraintType.OPPOSITE && <X className="w-4 h-4 text-white/50" />}
                     {hConstraints[r][c] === ConstraintType.NONE && !readOnly && <div className="w-1 h-1 rounded-full bg-tango-accent/30 hover:bg-tango-accent" />}
                   </div>
@@ -72,24 +75,27 @@ const Grid: React.FC<GridProps> = ({
 
           {/* Vertical Constraint Row (Below cell, except last row) */}
           {r < 5 && (
-            <div className="flex items-center h-6 sm:h-8">
+            <div className="flex items-center h-4 sm:h-6">
+
               {row.map((_, c) => (
                 <React.Fragment key={`v-const-${r}-${c}`}>
                   {/* The Constraint Area */}
-                  <div 
+                  <div
                     onClick={() => !readOnly && onVConstraintClick(r, c)}
                     className={`
-                      w-12 sm:w-16 h-full flex items-center justify-center 
+                      w-10 sm:w-14 h-full flex items-center justify-center 
                       cursor-pointer hover:opacity-100 opacity-80
                       ${readOnly ? 'cursor-default' : ''}
                     `}
                   >
-                     {vConstraints[r][c] === ConstraintType.EQUAL && <Equal className="w-4 h-4 text-white rotate-90" />}
-                     {vConstraints[r][c] === ConstraintType.OPPOSITE && <X className="w-4 h-4 text-white/50" />}
-                     {vConstraints[r][c] === ConstraintType.NONE && !readOnly && <div className="w-1 h-1 rounded-full bg-tango-accent/30 hover:bg-tango-accent" />}
+                    {vConstraints[r][c] === ConstraintType.EQUAL && <Equal className="w-3 h-3 text-white rotate-90" />}
+
+                    {vConstraints[r][c] === ConstraintType.OPPOSITE && <X className="w-4 h-4 text-white/50" />}
+                    {vConstraints[r][c] === ConstraintType.NONE && !readOnly && <div className="w-1 h-1 rounded-full bg-tango-accent/30 hover:bg-tango-accent" />}
                   </div>
                   {/* Spacer for the gap between horizontal cells */}
-                  {c < 5 && <div className="w-6 sm:w-8 h-full" />}
+                  {c < 5 && <div className="w-4 sm:w-6 h-full" />}
+
                 </React.Fragment>
               ))}
             </div>
