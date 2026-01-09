@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Play, Trash2, Clock } from 'lucide-react';
+import { X, Play, Trash2, Clock, Save } from 'lucide-react';
 import { HistoryItem } from '../types';
 
 interface HistoryModalProps {
@@ -20,6 +20,60 @@ const HistoryModal: React.FC<HistoryModalProps> = ({
     formatDuration,
 }) => {
     if (!isOpen) return null;
+
+    const handleSaveLogs = () => {
+        const header = "Tango Master Logs\n=================\n\n";
+        const content = history.map((item, index) => {
+            const { cells, hConstraints, vConstraints } = item.grid;
+            let gridStr = "";
+
+            for (let r = 0; r < 6; r++) {
+                // Cells and H-Constraints
+                let rowStr = "  ";
+                for (let c = 0; c < 6; c++) {
+                    const val = cells[r][c];
+                    rowStr += val === 'SUN' ? 'S' : val === 'MOON' ? 'M' : '.';
+
+                    if (c < 5) {
+                        const constr = hConstraints[r][c];
+                        rowStr += constr === 'EQUAL' ? ' = ' : constr === 'OPPOSITE' ? ' x ' : '   ';
+                    }
+                }
+                gridStr += rowStr + "\n";
+
+                // V-Constraints
+                if (r < 5) {
+                    let vRowStr = "  ";
+                    for (let c = 0; c < 6; c++) {
+                        const constr = vConstraints[r][c];
+                        vRowStr += constr === 'EQUAL' ? '=' : constr === 'OPPOSITE' ? 'x' : ' ';
+
+                        if (c < 5) {
+                            vRowStr += '   ';
+                        }
+                    }
+                    gridStr += vRowStr + "\n";
+                }
+            }
+
+            return `Entry #${history.length - index}
+Date: ${new Date(item.timestamp).toLocaleString()}
+Duration: ${formatDuration(item.duration)}
+
+${gridStr}
+----------------------------------------`;
+        }).join('\n\n');
+
+        const blob = new Blob([header + content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'tango_master_logs.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
@@ -79,7 +133,14 @@ const HistoryModal: React.FC<HistoryModalProps> = ({
 
                 {/* Footer */}
                 {history.length > 0 && (
-                    <div className="p-4 border-t border-slate-800 bg-slate-900/50 rounded-b-xl flex justify-end">
+                    <div className="p-4 border-t border-slate-800 bg-slate-900/50 rounded-b-xl flex justify-end gap-3">
+                        <button
+                            onClick={handleSaveLogs}
+                            className="flex items-center gap-2 px-4 py-2 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-900/20 rounded-lg transition-colors text-sm font-medium"
+                        >
+                            <Save className="w-4 h-4" />
+                            Save Logs
+                        </button>
                         <button
                             onClick={onClearHistory}
                             className="flex items-center gap-2 px-4 py-2 text-red-400 hover:text-red-300 hover:bg-red-900/20 rounded-lg transition-colors text-sm font-medium"

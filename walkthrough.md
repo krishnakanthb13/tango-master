@@ -22,8 +22,10 @@ Instead of manual entry, you can upload a screenshot:
 ### 4. Solve History
 Access your previous work by clicking the **Clock Icon** in the top right corner:
 - **History Modal**: View a list of your past solves with timestamps and durations.
+- **Limitless History**: All successful solves are stored in your browser's local storage.
 - **Review Boards**: Click **Load Board** on any history item to see the saved state.
-- **Local Storage**: All history is saved in your browser, so it's there even if you refresh!
+- **Export Data**: Click the **Save Logs** button to download a clean text file (`tango_master_logs.txt`) containing all your solve details.
+- **Clear History**: Use the **Clear All History** button to wipe your local records and start fresh.
 
 > [!TIP]
 > **For the best AI results**:
