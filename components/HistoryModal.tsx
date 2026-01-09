@@ -21,7 +21,7 @@ const HistoryModal: React.FC<HistoryModalProps> = ({
 }) => {
     if (!isOpen) return null;
 
-    const handleSaveLogs = () => {
+    const handleSaveLogs = async () => {
         const header = "Tango Master Logs\n=================\n\n";
         const content = history.map((item, index) => {
             const { cells, hConstraints, vConstraints } = item.grid;
@@ -64,15 +64,36 @@ ${gridStr}
 ----------------------------------------`;
         }).join('\n\n');
 
-        const blob = new Blob([header + content], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'tango_master_logs.txt';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        const fullContent = header + content;
+
+        try {
+            // Check if available (Chrome, Edge, Opera)
+            if ('showSaveFilePicker' in window) {
+                const handle = await (window as any).showSaveFilePicker({
+                    suggestedName: 'tango_master_logs.txt',
+                    types: [{
+                        description: 'Text Files',
+                        accept: { 'text/plain': ['.txt'] },
+                    }],
+                });
+                const writable = await handle.createWritable();
+                await writable.write(fullContent);
+                await writable.close();
+            } else {
+                // Fallback for Firefox/Safari
+                const blob = new Blob([fullContent], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'tango_master_logs.txt';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }
+        } catch (err) {
+            console.error('Save cancelled or failed:', err);
+        }
     };
 
     return (
