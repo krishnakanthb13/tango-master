@@ -6,7 +6,7 @@ Welcome to the **Tango Master** codebase! This guide will help you understand ho
 | File | Description |
 | :--- | :--- |
 | **[index.tsx](file:///c:/Users/ADMIN/OneDrive/Documents/GitHub/tango-master/index.tsx)** | The **entry point** for React. It finds the "root" element in the HTML and mounts the entire app into it. |
-| **[App.tsx](file:///c:/Users/ADMIN/OneDrive/Documents/GitHub/tango-master/App.tsx)** | The **Main Component**. It holds the "state" (the grid data) and handles user interactions like clicking a cell or uploading an image. |
+| **[App.tsx](file:///c:/Users/ADMIN/OneDrive/Documents/GitHub/tango-master/App.tsx)** | The **Main Component**. It holds the "state" (the grid data, history logs) and handles user interactions like clicking a cell, managing the "Solved History Logs" (including individual deletion and sorting), or uploading an image. |
 | **[types.ts](file:///c:/Users/ADMIN/OneDrive/Documents/GitHub/tango-master/types.ts)** | Defines the **Schemas** and **Enums**. It tells the app what a "SUN", "MOON", or "EQUAL" constraint actually is in code. |
 
 ## 🧩 Components & UI

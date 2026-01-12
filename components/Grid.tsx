@@ -32,7 +32,7 @@ const Grid: React.FC<GridProps> = ({
   };
 
   return (
-    <div className="flex flex-col select-none p-4 bg-tango-cell rounded-xl shadow-2xl border border-tango-accent/30">
+    <div className="flex flex-col select-none p-4 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700">
       {cells.map((row, r) => (
         <React.Fragment key={`row-${r}`}>
           {/* Cell Row */}
@@ -44,9 +44,9 @@ const Grid: React.FC<GridProps> = ({
                   onClick={() => !readOnly && onCellClick(r, c)}
                   className={`
                     w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center 
-                    bg-tango-bg border border-tango-accent/50 rounded-md
+                    bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-md
 
-                    cursor-pointer hover:bg-tango-accent/20 transition-colors
+                    cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors
                     ${readOnly ? 'cursor-default' : ''}
                   `}
                 >
@@ -63,10 +63,10 @@ const Grid: React.FC<GridProps> = ({
                       ${readOnly ? 'cursor-default' : ''}
                     `}
                   >
-                    {hConstraints[r][c] === ConstraintType.EQUAL && <Equal className="w-3 h-3 text-white font-bold" />}
+                    {hConstraints[r][c] === ConstraintType.EQUAL && <Equal className="w-3 h-3 text-slate-800 dark:text-white font-bold" />}
 
-                    {hConstraints[r][c] === ConstraintType.OPPOSITE && <X className="w-4 h-4 text-white/50" />}
-                    {hConstraints[r][c] === ConstraintType.NONE && !readOnly && <div className="w-1 h-1 rounded-full bg-tango-accent/30 hover:bg-tango-accent" />}
+                    {hConstraints[r][c] === ConstraintType.OPPOSITE && <X className="w-4 h-4 text-slate-400 dark:text-slate-500" />}
+                    {hConstraints[r][c] === ConstraintType.NONE && !readOnly && <div className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700 hover:bg-indigo-500" />}
                   </div>
                 )}
               </React.Fragment>
@@ -88,10 +88,10 @@ const Grid: React.FC<GridProps> = ({
                       ${readOnly ? 'cursor-default' : ''}
                     `}
                   >
-                    {vConstraints[r][c] === ConstraintType.EQUAL && <Equal className="w-3 h-3 text-white rotate-90" />}
+                    {vConstraints[r][c] === ConstraintType.EQUAL && <Equal className="w-3 h-3 text-slate-800 dark:text-white rotate-90" />}
 
-                    {vConstraints[r][c] === ConstraintType.OPPOSITE && <X className="w-4 h-4 text-white/50" />}
-                    {vConstraints[r][c] === ConstraintType.NONE && !readOnly && <div className="w-1 h-1 rounded-full bg-tango-accent/30 hover:bg-tango-accent" />}
+                    {vConstraints[r][c] === ConstraintType.OPPOSITE && <X className="w-4 h-4 text-slate-400 dark:text-slate-500" />}
+                    {vConstraints[r][c] === ConstraintType.NONE && !readOnly && <div className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700 hover:bg-indigo-500" />}
                   </div>
                   {/* Spacer for the gap between horizontal cells */}
                   {c < 5 && <div className="w-4 sm:w-6 h-full" />}
