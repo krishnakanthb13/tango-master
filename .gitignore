@@ -1,6 +1,7 @@
 # Logs
 logs
 *.log
+tango_master_logs.txt
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

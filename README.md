@@ -4,6 +4,9 @@
 
 # ☀️ Tango Master 🌙
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+
 **Tango Master** is a high-performance solver and interactive playground for the popular "Tango" (Sun and Moon) logic puzzle. Whether you're stuck on a difficult grid or want to see AI reason through spatial constraints, Tango Master has you covered.
 
 ---
@@ -41,7 +44,7 @@
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/tango-master.git
+   git clone https://github.com/krishnakanthb13/tango-master.git
    cd tango-master
    ```
 
@@ -66,10 +69,13 @@
 
 ---
 
-## 📖 How to Use
+## 📖 Documentation
 
-For a detailed guide on how to play, use the solver, and master the vision features, check out the **[Walkthrough Guide](walkthrough.md)**.
-For a deep dive into the technical implementation and codebase rationale, see the **[Code Walkthrough](codewalkthrough.md)**.
+For a detailed guide on how to play, use the solver, and master the vision features, check out the **[Design Philosophy & Walkthrough](DESIGN_PHILOSOPHY.md)**.
+
+For a deep dive into the technical implementation, codebase architecture, and logic, see the **[Technical Code Documentation](CODE_DOCUMENTATION.md)**.
+
+Want to help improve Tango Master? Check out the **[Contributing Guidelines](CONTRIBUTING.md)**.
 
 ---
 
