@@ -1,11 +1,13 @@
 import React, { useState, useRef } from 'react';
-import { Camera, RefreshCw, Play, RotateCcw, AlertCircle, CheckCircle2, Sun, Moon, History as HistoryIcon } from 'lucide-react';
+import { Camera, RefreshCw, Play, RotateCcw, AlertCircle, CheckCircle2, Sun, Moon, History as HistoryIcon, Trophy } from 'lucide-react';
 import Grid from './components/Grid';
 import HistoryModal from './components/HistoryModal';
+import GeneratorModal from './components/GeneratorModal';
 
-import { GridState, CellValue, ConstraintType, HistoryItem } from './types';
+import { GridState, CellValue, ConstraintType, HistoryItem, Difficulty } from './types';
 import { createEmptyGrid, solveTango } from './services/solver';
 import { parseGridFromImage } from './services/geminiService';
+import { generateBoard } from './services/generator';
 
 const App: React.FC = () => {
   const [grid, setGrid] = useState<GridState>(createEmptyGrid());
@@ -18,6 +20,7 @@ const App: React.FC = () => {
     return saved ? JSON.parse(saved) : [];
   });
   const [showHistory, setShowHistory] = useState(false);
+  const [showGenerator, setShowGenerator] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
 
@@ -129,6 +132,15 @@ const App: React.FC = () => {
     }
   };
 
+  const handleGenerate = (difficulty: Difficulty) => {
+    const newBoard = generateBoard(difficulty);
+    setGrid(newBoard);
+    setIsSolved(false);
+    setSolveDuration(null);
+    setError(null);
+    setShowGenerator(false);
+  }
+
 
 
   const formatDuration = (ms: number) => {
@@ -213,6 +225,14 @@ const App: React.FC = () => {
         {/* Actions Bar */}
         <div className="flex flex-col items-center gap-2 w-full">
           <div className="flex flex-wrap items-center justify-center gap-3 w-full">
+            <button
+              onClick={() => setShowGenerator(true)}
+              className="flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg font-semibold shadow-lg shadow-blue-900/20 transition-all transform hover:scale-105 text-sm"
+            >
+              <Trophy className="w-5 h-5" />
+              <span>New Game</span>
+            </button>
+
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={isLoading}
@@ -307,6 +327,12 @@ const App: React.FC = () => {
         onLoadItem={loadHistoryItem}
         onClearHistory={handleClearHistory}
         formatDuration={formatDuration}
+      />
+
+      <GeneratorModal
+        isOpen={showGenerator}
+        onClose={() => setShowGenerator(false)}
+        onGenerate={handleGenerate}
       />
     </div>
 

@@ -10,7 +10,7 @@ const cloneGrid = (grid: GridState): GridState => ({
 });
 
 // Check if placing a value at (r, c) is valid according to Tango rules
-const isValid = (grid: GridState, r: number, c: number, value: CellValue): boolean => {
+export const isValid = (grid: GridState, r: number, c: number, value: CellValue): boolean => {
   const { cells, hConstraints, vConstraints } = grid;
 
   // 1. No more than 2 of same type next to each other

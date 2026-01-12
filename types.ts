@@ -30,3 +30,5 @@ export interface HistoryItem {
   duration: number; // in milliseconds
   grid: GridState;
 }
+
+export type Difficulty = 'Easy' | 'Medium' | 'Hard';

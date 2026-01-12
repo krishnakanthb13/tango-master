@@ -27,6 +27,12 @@ Access your previous work by clicking the **Clock Icon** in the top right corner
 - **Export Data**: Click the **Save Logs** button to download a clean text file (`tango_master_logs.txt`) containing all your solve details.
 - **Clear History**: Use the **Clear All History** button to wipe your local records and start fresh.
 
+### 5. Random Board Generator
+Feeling stuck or want to practice? Generate a new puzzle instantly:
+- Click **New Game**.
+- Choose your difficulty: **Easy**, **Medium**, or **Hard**.
+- The app will generate a valid, solvable board for you to play!
+
 > [!TIP]
 > **For the best AI results**:
 > 1. Crop your screenshot to just the grid area.
