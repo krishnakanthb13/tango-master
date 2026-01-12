@@ -31,7 +31,7 @@ const HistoryModal: React.FC<HistoryModalProps> = ({
         return () => { document.body.style.overflow = 'unset'; };
     }, [isOpen]);
 
-    const formatTime = (ts: number) => {
+    const formatTime = (ts: string) => {
         return new Date(ts).toLocaleString('en-US', {
             month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
         });

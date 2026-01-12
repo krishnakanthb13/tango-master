@@ -18,13 +18,13 @@ Instead of manual entry, you can upload a screenshot:
 - Click **Upload Screenshot**.
 - Select a screenshot of a 6x6 Tango grid.
 - **Gemini 3.0 Flash (Thinking)**: The app uses the latest Thinking model, presented in a premium dashed-border upload area, to analyze the image, reason through the spatial layout, and automatically populate the grid.
-- AI can make mistakes, so always double-check the solution. Double click on a cell to toggle between equal (=), cross (x), sun, and moon.
+- AI can make mistakes, so always double-check the solution. Click on a cell to toggle (Sun → Moon → Empty) and click borders for constraints (None → = → x).
 
 ### 4. Solved History Logs
 Access your previous work by clicking the **Clock Icon** in the top right corner:
 - **History Modal**: View a list of your past solves with timestamps, professional durations ($\mu s$, ms, s), and snapshots.
 - **Reverse Chronological Sorting**: Your history is automatically sorted so your latest solves are always at the top.
-- **Individual Deletion**: Remove specific records from your history by clicking the ⛔ button.
+- **Individual Deletion**: Remove specific records from your history by clicking the ⓧ button.
 - **Review Boards**: Click **Load Board** on any history item to see the saved state.
 - **Export Data**: Click the **Save Logs** button to download a clean text file (`tango_master_logs.txt`) containing all your solve details.
 - **Clear History**: Use the **Clear All History** button to wipe your local records and start fresh.

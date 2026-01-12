@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Camera, RefreshCw, Play, RotateCcw, AlertCircle, CheckCircle, Sun, Moon, History as HistoryIcon, Trophy, Sparkles, Loader2, Wand2, HelpCircle, Upload, Info } from 'lucide-react';
+import { RefreshCw, Play, RotateCcw, AlertCircle, CheckCircle, Sun, Moon, History as HistoryIcon, Sparkles, Loader2, HelpCircle, Upload, Info } from 'lucide-react';
 import Grid from './components/Grid';
 import HistoryModal from './components/HistoryModal';
 import GeneratorModal from './components/GeneratorModal';

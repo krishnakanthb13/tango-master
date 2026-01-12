@@ -15,6 +15,16 @@ const GeneratorModal: React.FC<GeneratorModalProps> = ({
 }) => {
     const [difficulty, setDifficulty] = useState<Difficulty>('Medium');
 
+    // Scroll Lock
+    React.useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => { document.body.style.overflow = 'unset'; };
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     const handleGenerate = () => {

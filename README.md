@@ -12,9 +12,9 @@
 
 - **Interactive Grid Editor**: Manually input puzzles with a click-based interface for cells and constraints. Optimized for standard zoom levels.
 - **Instant Backtracking Solver**: Solves any valid 6x6 Tango puzzle in milliseconds, with a high-precision timer displaying performance down to microseconds.
-- **AI-Powered Vision**: Upload a screenshot of a puzzle, and let **Google Gemini 3.0 Flash Preview** (with Thinking mode) analyze the grid and constraints for you. AI can make mistakes, so always double-check the solution. Double click on a cell to toggle between equal (=), cross (x), sun, and moon.
+- **AI-Powered Vision**: Upload a screenshot of a puzzle, and let **Google Gemini 3.0 Flash Preview** (with Thinking mode) analyze the grid and constraints for you. AI can make mistakes, so always click cells to toggle (Sun → Moon → Empty) and borders for constraints (None → = → x).
 - **Random Board Generator**: Instantly generate valid, solvable boards with three difficulty levels: **Easy**, **Medium**, and **Hard**. Perfect for practicing or playing for fun.
-- **Solved History Logs & Persistence**: Your successful solves are automatically saved locally with professional timing ($\mu s$, ms, s). Access your history via a sleek modal to review previous boards and durations, or delete specific entries (⛔) to keep your history clean. Export your logs to a text file for safekeeping.
+- **Solved History Logs & Persistence**: Your successful solves are automatically saved locally with professional timing ($\mu s$, ms, s). Access your history via a sleek modal to review previous boards and durations, or delete specific entries (ⓧ) to keep your history clean. Export your logs to a text file for safekeeping.
 - **Premium UI**: A sleek, dark-themed, compact experience with fluid animations powered by Framer Motion and Lucide icons.
 
 
