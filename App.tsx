@@ -124,32 +124,29 @@ const App: React.FC = () => {
   };
 
   const handleHint = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      try {
-        const solution = solveTango(grid);
-        if (solution) {
-          // Find first difference/empty and fill it
-          for (let r = 0; r < 6; r++) {
-            for (let c = 0; c < 6; c++) {
-              if (grid.cells[r][c] === CellValue.EMPTY) {
-                setGrid(prev => {
-                  const newCells = prev.cells.map(row => [...row]);
-                  newCells[r][c] = solution.cells[r][c];
-                  return { ...prev, cells: newCells };
-                });
-                return;
-              }
+    try {
+      const solution = solveTango(grid);
+      if (solution) {
+        // Find first difference/empty and fill it
+        for (let r = 0; r < 6; r++) {
+          for (let c = 0; c < 6; c++) {
+            if (grid.cells[r][c] === CellValue.EMPTY) {
+              setGrid(prev => {
+                const newCells = prev.cells.map(row => [...row]);
+                newCells[r][c] = solution.cells[r][c];
+                return { ...prev, cells: newCells };
+              });
+              return;
             }
           }
-          alert("All cells are already filled!");
-        } else {
-          alert("This puzzle seems unsolvable.");
         }
-      } finally {
-        setIsLoading(false);
+        alert("All cells are already filled!");
+      } else {
+        alert("This puzzle seems unsolvable.");
       }
-    }, 50);
+    } catch (e) {
+      console.error("Hint error", e);
+    }
   };
 
   const handleClear = () => {
