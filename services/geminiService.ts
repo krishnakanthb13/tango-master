@@ -1,10 +1,6 @@
 import { GoogleGenAI, Type, ThinkingLevel } from "@google/genai";
 import { GridState, CellValue, ConstraintType } from '../types';
 
-// Initialize Gemini
-// Note: In a real app, use a proxy or secure backend. For this demo, we use env var.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 const SYSTEM_INSTRUCTION = `
 You are an expert vision system designed to digitize "Tango" (Sun and Moon) logic puzzles from screenshots, specifically from the LinkedIn Tango game.
 Your goal is to perfectly transcribe the 6x6 grid state, including symbols (Suns, Moons) and constraints (Equal, Opposite).
@@ -44,7 +40,8 @@ Return a JSON object with the following structure:
 3. 'vConstraints': A 5x6 array of strings ("EQUAL", "OPPOSITE", "NONE").
 `;
 
-export const parseGridFromImage = async (base64Image: string): Promise<GridState> => {
+export const parseGridFromImage = async (apiKey: string, base64Image: string): Promise<GridState> => {
+  const ai = new GoogleGenAI({ apiKey });
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',

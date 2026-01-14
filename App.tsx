@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { RefreshCw, Play, RotateCcw, AlertCircle, CheckCircle, Sun, Moon, History as HistoryIcon, Sparkles, Loader2, HelpCircle, Upload, Info } from 'lucide-react';
+import { RefreshCw, Play, RotateCcw, AlertCircle, CheckCircle, Sun, Moon, History as HistoryIcon, Sparkles, Loader2, HelpCircle, Upload, Info, PaintBucket, Wand2 } from 'lucide-react';
 import Grid from './components/Grid';
 import HistoryModal from './components/HistoryModal';
 import GeneratorModal from './components/GeneratorModal';
@@ -7,6 +7,8 @@ import GeneratorModal from './components/GeneratorModal';
 import { GridState, CellValue, ConstraintType, HistoryItem, Difficulty } from './types';
 import { createEmptyGrid, solveTango } from './services/solver';
 import { parseGridFromImage } from './services/geminiService';
+import { parseGridFromImageAIML } from './services/aiml';
+import { parseGridFromImageVercel } from './services/vercel';
 import { generateBoard } from './services/generator';
 
 const App: React.FC = () => {
@@ -21,18 +23,31 @@ const App: React.FC = () => {
   });
   const [showHistory, setShowHistory] = useState(false);
   const [showGenerator, setShowGenerator] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('tango_theme');
+    return saved ? JSON.parse(saved) : true; // Default to dark mode
+  });
   const [isBoardSolvable, setIsBoardSolvable] = useState(true);
+  const [visionModel, setVisionModel] = useState<'gemini' | 'vercel' | 'aiml'>(() => {
+    const stored = localStorage.getItem('tango_vision_model');
+    return (stored as any) || 'gemini';
+  });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Toggle Dark Mode class on document
+  // Toggle Dark Mode class on document and save to localStorage
   React.useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
+    localStorage.setItem('tango_theme', JSON.stringify(isDarkMode));
   }, [isDarkMode]);
+
+  // Persistence for vision model
+  React.useEffect(() => {
+    localStorage.setItem('tango_vision_model', visionModel);
+  }, [visionModel]);
 
   // Dynamic Solvability Check
   React.useEffect(() => {
@@ -209,8 +224,23 @@ const App: React.FC = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    if (!process.env.API_KEY) {
-      setError("API Key missing. Cannot use Vision.");
+    // Select API key based on model
+    let apiKey: string | undefined;
+    let modelLabel: string;
+
+    if (visionModel === 'gemini') {
+      apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY;
+      modelLabel = 'Gemini';
+    } else if (visionModel === 'vercel') {
+      apiKey = process.env.VERCEL_API_KEY;
+      modelLabel = 'Gemini/Claude (Vercel)';
+    } else {
+      apiKey = process.env.AIML_API_KEY;
+      modelLabel = 'Gemini/Claude (AIML)';
+    }
+
+    if (!apiKey) {
+      setError(`API Key for ${modelLabel} is missing. Please check .env.local.`);
       return;
     }
 
@@ -221,28 +251,32 @@ const App: React.FC = () => {
     reader.readAsDataURL(file);
     reader.onload = async () => {
       const base64 = reader.result as string;
-      // Remove data:image/...;base64, prefix
       const base64Data = base64.split(',')[1];
 
       try {
-        const newGrid = await parseGridFromImage(base64Data);
+        let newGrid;
+        if (visionModel === 'gemini') {
+          newGrid = await parseGridFromImage(apiKey, base64Data);
+        } else if (visionModel === 'vercel') {
+          newGrid = await parseGridFromImageVercel(apiKey, base64Data, file.type);
+        } else {
+          newGrid = await parseGridFromImageAIML(apiKey, base64Data, file.type);
+        }
         setGrid(newGrid);
         setIsSolved(false);
-      } catch (err) {
-        setError("Failed to process image. Try cropping the screenshot to just the grid.");
+      } catch (err: any) {
+        console.error("Vision Error:", err);
+        setError(`Failed to process image using ${modelLabel}. Try cropping the screenshot.`);
       } finally {
         setIsLoading(false);
+        if (fileInputRef.current) fileInputRef.current.value = '';
       }
     };
     reader.onerror = () => {
       setError("Error reading file.");
       setIsLoading(false);
     };
-
-    // Reset input
-    if (fileInputRef.current) fileInputRef.current.value = '';
   };
-
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col items-center py-8 px-4 font-sans transition-colors duration-200 relative">
@@ -325,7 +359,7 @@ const App: React.FC = () => {
         {/* Right Column: Controls */}
         <div className="w-full max-w-[500px] lg:max-w-none lg:w-96 flex flex-col gap-4 mx-auto lg:mx-0">
 
-          {/* Actions Card */}
+          {/* Game Controls Card */}
           <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 transition-colors duration-200">
             <h2 className="text-xl font-semibold mb-4 text-slate-800 dark:text-slate-200 flex items-center gap-2">
               <Play className="w-5 h-5" /> Game Controls
@@ -348,7 +382,7 @@ const App: React.FC = () => {
                   </>
                 ) : (
                   <>
-                    {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
+                    {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Wand2 className="w-5 h-5" />}
                     <span>{isLoading ? 'Solving...' : 'Auto Solve'}</span>
                   </>
                 )}
@@ -386,7 +420,7 @@ const App: React.FC = () => {
                 </span>
               ) : isSolved ? (
                 <span className="text-emerald-600 dark:text-emerald-400 text-sm font-medium flex items-center justify-center gap-2">
-                  <CheckCircle className="w-4 h-4" /> Solved
+                  <CheckCircle className="w-4 h-4" /> Board Solved
                 </span>
               ) : (
                 <span className="text-emerald-600 dark:text-emerald-400 text-sm font-medium flex items-center justify-center gap-2">
@@ -394,8 +428,15 @@ const App: React.FC = () => {
                 </span>
               )}
             </div>
+          </div>
 
-            <div className="relative group mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+          {/* Setup Board Card */}
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 transition-colors duration-200">
+            <h2 className="text-xl font-semibold mb-4 text-slate-800 dark:text-slate-200 flex items-center gap-2">
+              <PaintBucket className="w-5 h-5" /> Setup Board
+            </h2>
+
+            <div className="relative group">
               <input
                 type="file"
                 ref={fileInputRef}
@@ -423,28 +464,50 @@ const App: React.FC = () => {
                     <div className="text-center">
                       <span className="block text-slate-700 dark:text-slate-200 font-medium">Upload Screenshot</span>
                       <span className="block text-slate-400 dark:text-slate-500 text-xs mt-1 flex items-center justify-center gap-1">
-                        <Sparkles className="w-3 h-3 text-indigo-500" />
-                        Gemini 3 Flash (Thinking)
+                        <Sparkles className={`w-3 h-3 ${visionModel === 'gemini' ? 'text-indigo-500' :
+                          visionModel === 'vercel' ? 'text-orange-500' : 'text-emerald-500'
+                          }`} />
+                        {visionModel === 'gemini' ? 'Gemini 3 Flash' :
+                          visionModel === 'vercel' ? 'Gemini/Claude (Vercel)' : 'Gemini/Claude (AIML)'} (Thinking)
                       </span>
                     </div>
                   </>
                 )}
               </label>
-            </div>
-          </div>
 
-          {/* Legend Card */}
-          <div className="bg-slate-100 dark:bg-slate-800/50 p-4 rounded-xl text-sm text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800">
-            <h3 className="font-bold text-slate-800 dark:text-slate-200 mb-2">Controls</h3>
-            <ul className="space-y-2">
-              <li className="flex items-center gap-2">
-                <span className="font-bold text-amber-500">Sun/Moon</span>: Click cell to toggle.
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="font-bold text-slate-500">= / x</span>: Click borders to toggle constraints.
-              </li>
-            </ul>
-            <p className="text-xs mt-2 italic opacity-75">Tip: Crop screenshots to just the grid.</p>
+              {/* Model Selection Toggle */}
+              <div className="mt-3 flex gap-1 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+                <button
+                  onClick={() => setVisionModel('aiml')}
+                  className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-all ${visionModel === 'aiml'
+                    ? 'bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                    }`}
+                >
+                  AIML
+                </button>
+                <button
+                  onClick={() => setVisionModel('gemini')}
+                  className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-all ${visionModel === 'gemini'
+                    ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                    }`}
+                >
+                  Gemini
+                </button>
+                <button
+                  onClick={() => setVisionModel('vercel')}
+                  className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-all ${visionModel === 'vercel'
+                    ? 'bg-white dark:bg-slate-700 text-orange-600 dark:text-orange-400 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                    }`}
+                >
+                  Vercel
+                </button>
+              </div>
+            </div>
+
+
           </div>
 
         </div>
@@ -471,14 +534,38 @@ const App: React.FC = () => {
         <div className="bg-white/50 dark:bg-slate-900/50 p-6 rounded-xl border border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm">
           <h3 className="font-bold text-slate-800 dark:text-slate-200 mb-2 flex items-center justify-center gap-2">
             How to Play
+            <div className="group relative">
+              <Info className="w-4 h-4 text-slate-400 cursor-help hover:text-indigo-500 transition-colors" />
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-64 p-3 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 text-xs text-left font-normal animate-in fade-in slide-in-from-bottom-2">
+                <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white dark:bg-slate-900 border-b border-r border-slate-200 dark:border-slate-700 rotate-45"></div>
+                <p className="font-bold text-slate-800 dark:text-slate-200 mb-2 border-b border-slate-100 dark:border-slate-800 pb-1 flex items-center gap-1.5">
+                  <Play className="w-3 h-3 text-indigo-500" /> Quick Controls
+                </p>
+                <ul className="space-y-2 text-slate-600 dark:text-slate-400">
+                  <li className="flex items-center gap-2">
+                    <Sun className="w-3.5 h-3.5 text-amber-500" /> / <Moon className="w-3.5 h-3.5 text-blue-500" /> Click cells to toggle symbols
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="font-bold text-slate-500">= / x</span> Click borders to toggle constraints
+                  </li>
+                  <li className="pt-2 mt-2 border-t border-slate-100 dark:border-slate-800 text-[10px] opacity-75 italic flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-indigo-400" /> AI Tip: Crop screenshots to just the grid
+                  </li>
+                </ul>
+              </div>
+            </div>
           </h3>
-          <ul className="text-slate-600 dark:text-slate-400 text-sm space-y-1">
-            <li>Place Sun/Moon so no more than 2 similar items are adjacent.</li>
-            <li>Equal numbers of Sun/Moon in each row/column.</li>
-            <li>Respect = (equal) and x (opposite) constraints.</li>
+          <ul className="text-slate-600 dark:text-slate-400 text-sm space-y-2 max-w-lg mx-auto leading-relaxed">
+            <li className="flex items-center justify-center gap-1.5">
+              Place <Sun className="w-3.5 h-3.5 text-amber-500" /> / <Moon className="w-3.5 h-3.5 text-blue-500" /> so no more than 2 similar items are adjacent.
+            </li>
+            <li>Equal numbers of <span className="font-semibold underline decoration-amber-500/30">Suns</span> and <span className="font-semibold underline decoration-blue-500/30">Moons</span> in each row and column.</li>
+            <li className="flex items-center justify-center gap-1.5">
+              Respect <span className="font-bold text-slate-500">=</span> (equal) and <span className="font-bold text-slate-500">x</span> (opposite) constraints.
+            </li>
           </ul>
         </div>
-        <div className="text-slate-400 dark:text-slate-500 text-xs font-medium animate-pulse">
+        <div className="text-slate-400 dark:text-slate-500 text-xs font-medium animate-pulse footer-glow-green">
           Built with 🧠, ☕ and 🤖 AI by Krishna Kanth B
         </div>
       </footer>

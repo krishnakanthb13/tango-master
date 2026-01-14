@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tango Master</title>
+  <script>
+    (function () {
+      const saved = localStorage.getItem('tango_theme');
+      const isDark = saved ? JSON.parse(saved) : true;
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -60,6 +71,14 @@
     .dark ::-webkit-scrollbar-thumb:hover {
       background: #475569;
       /* slate-600 */
+    }
+
+    /* Green glow for footer in dark mode */
+    .dark .footer-glow-green {
+      color: #10b981 !important;
+      /* emerald-500 */
+      text-shadow: 0 0 8px rgba(16, 185, 129, 0.6), 0 0 20px rgba(16, 185, 129, 0.4);
+      transition: all 0.3s ease;
     }
   </style>
   <script type="importmap">
