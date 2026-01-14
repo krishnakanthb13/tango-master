@@ -479,7 +479,7 @@ const App: React.FC = () => {
           </ul>
         </div>
         <div className="text-slate-400 dark:text-slate-500 text-xs font-medium animate-pulse">
-          Built with 🧠 and ☕ by Krishna Kanth B
+          Built with 🧠, ☕ and 🤖 AI by Krishna Kanth B
         </div>
       </footer>
 

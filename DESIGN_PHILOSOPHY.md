@@ -28,3 +28,15 @@ Tango Master is designed to fit into a solver's daily habit:
 - **Solve**: Immediate feedback with valid results.
 - **Record**: History logs for tracking performance over time.
 - **Export**: Ability to save results for documentation or sharing.
+
+---
+
+## 🧠 Behind the Scenes: Solver & Generator
+
+### 🔍 The Solver (Simple Terms)
+The solver is like a logical judge. For every empty cell, it asks: "If I put a Sun here, does it create 3-in-a-row? Does it balance out the Moons? Does it match the '=' or 'x' symbols nearby?". If the answer is yes to all, it stays. If it gets stuck later, it comes back and tries the Moon instead. This happens so fast that it seems like magic!
+
+### 🎲 The Generator (Simple Terms)
+Creating a Tango puzzle is like creating a secret code—a fresh one every time. Our generator first makes a perfectly filled grid using randomized placements, so it's never the same twice. Then it starts erasing pieces of the grid and replacing them with clues (like the `=` and `x` signs). It keeps just enough clues so that you can use logic to rebuild that original, unique solution.
+
+---

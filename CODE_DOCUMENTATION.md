@@ -74,3 +74,26 @@ The `solve` function uses a recursive backtracking approach:
 - **Model**: `gemini-1.5-flash` (or newer)
 - **Purpose**: Parses image screenshots to detect the initial state of a 6x6 grid.
 - **Security**: Requires an API Key provided via `.env.local` (client-side environment variable).
+
+---
+
+## 🧩 How the Solver and Generator Work
+
+### 🔍 Backtracking Solver
+The solver uses a "Backtracking" algorithm tailored for Tango rules:
+1.  **Placement**: It tries to place a Sun or Moon in the first empty cell.
+2.  **Constraint Check**: It immediately checks if that placement breaks any rules:
+    -   Are there 3 of the same icon in a row?
+    -   Does the row/column already have 3 of that icon?
+    -   Does it violate any `=` or `x` relationship constraints?
+3.  **Recursion**: If valid, it moves to the next cell.
+4.  **Backtrack**: If it hits a dead end (no icon fits), it goes back and tries the other icon in the previous cell.
+
+### 🎲 Random Level Generator
+The generator ensures every new game is a fresh but fair challenge:
+1.  **Full Board**: It first uses the solver to create a completely filled 6x6 grid that follows all rules.
+2.  **Paring Down**: It then starts hiding some of the icons based on the selected difficulty (**Easy**, **Medium**, or **Hard**).
+3.  **Hint Injection**: To keep the puzzle solvable, it turns the relationships between hidden cells into `=` (Equal) or `x` (Opposite) constraints, providing the logical clues needed to find the original solution.
+4.  **Ensuring Uniqueness**: By shuffling the placement order for Suns and Moons using `Math.random()`, the generator ensures that every board is procedurally unique and doesn't repeat patterns.
+
+---
