@@ -41,7 +41,7 @@ const HistoryModal: React.FC<HistoryModalProps> = ({
 
     const handleSaveLogs = async () => {
         const header = "Tango Master Logs\n=================\n\n";
-        const content = history.slice(0, 100).map((item, index) => {
+        const content = history.slice(0, 100).map((item) => {
             const { cells, hConstraints, vConstraints } = item.grid;
             let gridStr = "";
 
@@ -74,8 +74,7 @@ const HistoryModal: React.FC<HistoryModalProps> = ({
                 }
             }
 
-            return `Entry #${index + 1}
-Date: ${new Date(item.timestamp).toLocaleString()}
+            return `Date: ${new Date(item.timestamp).toLocaleString()}
 Duration: ${formatDuration(item.duration)}
 
 ${gridStr}
